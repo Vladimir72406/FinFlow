@@ -1,0 +1,600 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="Хранилище FinflowModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="c_status">
+          <Key>
+            <PropertyRef Name="c_status_id" />
+          </Key>
+          <Property Name="c_status_id" Type="int" Nullable="false" />
+          <Property Name="name" Type="varchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="Funds">
+          <Key>
+            <PropertyRef Name="Funds_id" />
+          </Key>
+          <Property Name="Funds_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="SendAmount" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="SendCurrency" Type="int" Nullable="false" />
+          <Property Name="ReceiveAmount" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="ReceiveCurrency" Type="int" Nullable="false" />
+          <Property Name="Rate" Type="decimal" Precision="18" Scale="6" Nullable="false" />
+          <Property Name="Remittance_Id" Type="uniqueidentifier" Nullable="false" />
+        </EntityType>
+        <EntityType Name="l_linkStatus">
+          <Key>
+            <PropertyRef Name="l_linkStatus" />
+          </Key>
+          <Property Name="l_linkStatus" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="c_status_id_current" Type="int" Nullable="false" />
+          <Property Name="c_status_id_new" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="person">
+          <Key>
+            <PropertyRef Name="person_id" />
+          </Key>
+          <Property Name="person_id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="varchar" MaxLength="50" />
+          <Property Name="Surname" Type="varchar" MaxLength="50" />
+          <Property Name="DateOfBirth" Type="date" />
+        </EntityType>
+        <EntityType Name="Remittance">
+          <Key>
+            <PropertyRef Name="Remittance_Id" />
+          </Key>
+          <Property Name="Remittance_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="Code" Type="varchar" MaxLength="50" />
+          <Property Name="c_status_id" Type="int" Nullable="false" />
+          <Property Name="Sender_id" Type="int" Nullable="false" />
+          <Property Name="Receiver_id" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Remittance_state_log">
+          <Key>
+            <PropertyRef Name="Remittance_state_log" />
+          </Key>
+          <Property Name="Remittance_state_log" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Remittance_Id" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="c_status_id" Type="int" Nullable="false" />
+          <Property Name="datetime_modify" Type="datetime" />
+        </EntityType>
+        <Association Name="FK__Funds__Remittanc__7755B73D">
+          <End Role="Remittance" Type="Self.Remittance" Multiplicity="1" />
+          <End Role="Funds" Type="Self.Funds" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Remittance">
+              <PropertyRef Name="Remittance_Id" />
+            </Principal>
+            <Dependent Role="Funds">
+              <PropertyRef Name="Remittance_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__l_linkSta__c_sta__6BE40491">
+          <End Role="c_status" Type="Self.c_status" Multiplicity="1" />
+          <End Role="l_linkStatus" Type="Self.l_linkStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="c_status">
+              <PropertyRef Name="c_status_id" />
+            </Principal>
+            <Dependent Role="l_linkStatus">
+              <PropertyRef Name="c_status_id_current" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__l_linkSta__c_sta__6CD828CA">
+          <End Role="c_status" Type="Self.c_status" Multiplicity="1" />
+          <End Role="l_linkStatus" Type="Self.l_linkStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="c_status">
+              <PropertyRef Name="c_status_id" />
+            </Principal>
+            <Dependent Role="l_linkStatus">
+              <PropertyRef Name="c_status_id_new" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Remittanc__c_sta__72910220">
+          <End Role="c_status" Type="Self.c_status" Multiplicity="1" />
+          <End Role="Remittance" Type="Self.Remittance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="c_status">
+              <PropertyRef Name="c_status_id" />
+            </Principal>
+            <Dependent Role="Remittance">
+              <PropertyRef Name="c_status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Remittanc__c_sta__7EF6D905">
+          <End Role="c_status" Type="Self.c_status" Multiplicity="1" />
+          <End Role="Remittance_state_log" Type="Self.Remittance_state_log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="c_status">
+              <PropertyRef Name="c_status_id" />
+            </Principal>
+            <Dependent Role="Remittance_state_log">
+              <PropertyRef Name="c_status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Remittanc__Recei__74794A92">
+          <End Role="person" Type="Self.person" Multiplicity="1" />
+          <End Role="Remittance" Type="Self.Remittance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="person">
+              <PropertyRef Name="person_id" />
+            </Principal>
+            <Dependent Role="Remittance">
+              <PropertyRef Name="Receiver_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Remittanc__Remit__7E02B4CC">
+          <End Role="Remittance" Type="Self.Remittance" Multiplicity="1" />
+          <End Role="Remittance_state_log" Type="Self.Remittance_state_log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Remittance">
+              <PropertyRef Name="Remittance_Id" />
+            </Principal>
+            <Dependent Role="Remittance_state_log">
+              <PropertyRef Name="Remittance_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Remittanc__Sende__73852659">
+          <End Role="person" Type="Self.person" Multiplicity="1" />
+          <End Role="Remittance" Type="Self.Remittance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="person">
+              <PropertyRef Name="person_id" />
+            </Principal>
+            <Dependent Role="Remittance">
+              <PropertyRef Name="Sender_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="get_person" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="person_id" Type="int" Mode="In" />
+        </Function>
+        <Function Name="iud_funds" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="iud" Type="int" Mode="In" />
+          <Parameter Name="Funds_id" Type="int" Mode="InOut" />
+          <Parameter Name="SendAmount" Type="decimal" Mode="In" />
+          <Parameter Name="SendCurrency" Type="int" Mode="In" />
+          <Parameter Name="ReceiveAmount" Type="decimal" Mode="In" />
+          <Parameter Name="ReceiveCurrency" Type="int" Mode="In" />
+          <Parameter Name="Rate" Type="decimal" Mode="In" />
+          <Parameter Name="Remittance_Id" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="code" Type="int" Mode="InOut" />
+          <Parameter Name="error" Type="varchar" Mode="InOut" />
+        </Function>
+        <Function Name="iud_person" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="iud" Type="int" Mode="In" />
+          <Parameter Name="person_id" Type="int" Mode="InOut" />
+          <Parameter Name="Name" Type="varchar" Mode="In" />
+          <Parameter Name="Surname" Type="varchar" Mode="In" />
+          <Parameter Name="DateOfBirth" Type="date" Mode="In" />
+          <Parameter Name="code" Type="int" Mode="InOut" />
+          <Parameter Name="str_result" Type="varchar" Mode="InOut" />
+        </Function>
+        <Function Name="iud_remittance" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="iud" Type="int" Mode="In" />
+          <Parameter Name="Remittance_Id" Type="uniqueidentifier" Mode="InOut" />
+          <Parameter Name="Code" Type="varchar" Mode="In" />
+          <Parameter Name="c_status_id" Type="int" Mode="In" />
+          <Parameter Name="Sender_id" Type="int" Mode="In" />
+          <Parameter Name="Receiver_id" Type="int" Mode="In" />
+          <Parameter Name="code_result" Type="int" Mode="InOut" />
+          <Parameter Name="error" Type="varchar" Mode="InOut" />
+        </Function>
+        <Function Name="remittance_change_status" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="Remittance_Id" Type="uniqueidentifier" Mode="In" />
+          <Parameter Name="c_status_id_new" Type="int" Mode="In" />
+          <Parameter Name="code" Type="int" Mode="InOut" />
+          <Parameter Name="error" Type="varchar" Mode="InOut" />
+        </Function>
+        <EntityContainer Name="Хранилище FinflowModelContainer">
+          <EntitySet Name="c_status" EntityType="Self.c_status" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Funds" EntityType="Self.Funds" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="l_linkStatus" EntityType="Self.l_linkStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="person" EntityType="Self.person" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Remittance" EntityType="Self.Remittance" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Remittance_state_log" EntityType="Self.Remittance_state_log" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK__Funds__Remittanc__7755B73D" Association="Self.FK__Funds__Remittanc__7755B73D">
+            <End Role="Remittance" EntitySet="Remittance" />
+            <End Role="Funds" EntitySet="Funds" />
+          </AssociationSet>
+          <AssociationSet Name="FK__l_linkSta__c_sta__6BE40491" Association="Self.FK__l_linkSta__c_sta__6BE40491">
+            <End Role="c_status" EntitySet="c_status" />
+            <End Role="l_linkStatus" EntitySet="l_linkStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__l_linkSta__c_sta__6CD828CA" Association="Self.FK__l_linkSta__c_sta__6CD828CA">
+            <End Role="c_status" EntitySet="c_status" />
+            <End Role="l_linkStatus" EntitySet="l_linkStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Remittanc__c_sta__72910220" Association="Self.FK__Remittanc__c_sta__72910220">
+            <End Role="c_status" EntitySet="c_status" />
+            <End Role="Remittance" EntitySet="Remittance" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Remittanc__c_sta__7EF6D905" Association="Self.FK__Remittanc__c_sta__7EF6D905">
+            <End Role="c_status" EntitySet="c_status" />
+            <End Role="Remittance_state_log" EntitySet="Remittance_state_log" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Remittanc__Recei__74794A92" Association="Self.FK__Remittanc__Recei__74794A92">
+            <End Role="person" EntitySet="person" />
+            <End Role="Remittance" EntitySet="Remittance" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Remittanc__Remit__7E02B4CC" Association="Self.FK__Remittanc__Remit__7E02B4CC">
+            <End Role="Remittance" EntitySet="Remittance" />
+            <End Role="Remittance_state_log" EntitySet="Remittance_state_log" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Remittanc__Sende__73852659" Association="Self.FK__Remittanc__Sende__73852659">
+            <End Role="person" EntitySet="person" />
+            <End Role="Remittance" EntitySet="Remittance" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="FinflowModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="FinflowEntities" annotation:LazyLoadingEnabled="true">
+          <FunctionImport Name="get_person" ReturnType="Collection(FinflowModel.get_person_Result)">
+          <Parameter Name="person_id" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="iud_person">
+            <Parameter Name="iud" Mode="In" Type="Int32" />
+            <Parameter Name="person_id" Mode="InOut" Type="Int32" />
+            <Parameter Name="Name" Mode="In" Type="String" />
+            <Parameter Name="Surname" Mode="In" Type="String" />
+            <Parameter Name="DateOfBirth" Mode="In" Type="DateTime" />
+            <Parameter Name="code" Mode="InOut" Type="Int32" />
+            <Parameter Name="str_result" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="iud_funds">
+            <Parameter Name="iud" Mode="In" Type="Int32" />
+            <Parameter Name="Funds_id" Mode="InOut" Type="Int32" />
+            <Parameter Name="SendAmount" Mode="In" Type="Decimal" />
+            <Parameter Name="SendCurrency" Mode="In" Type="Int32" />
+            <Parameter Name="ReceiveAmount" Mode="In" Type="Decimal" />
+            <Parameter Name="ReceiveCurrency" Mode="In" Type="Int32" />
+            <Parameter Name="Rate" Mode="In" Type="Decimal" />
+            <Parameter Name="Remittance_Id" Mode="In" Type="Guid" />
+            <Parameter Name="code" Mode="InOut" Type="Int32" />
+            <Parameter Name="error" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="remittance_change_status">
+            <Parameter Name="Remittance_Id" Mode="In" Type="Guid" />
+            <Parameter Name="c_status_id_new" Mode="In" Type="Int32" />
+            <Parameter Name="code" Mode="InOut" Type="Int32" />
+            <Parameter Name="error" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="iud_remittance">
+            <Parameter Name="iud" Mode="In" Type="Int32" />
+            <Parameter Name="Remittance_Id" Mode="InOut" Type="Guid" />
+            <Parameter Name="Code" Mode="In" Type="String" />
+            <Parameter Name="c_status_id" Mode="In" Type="Int32" />
+            <Parameter Name="Sender_id" Mode="In" Type="Int32" />
+            <Parameter Name="Receiver_id" Mode="In" Type="Int32" />
+            <Parameter Name="code_result" Mode="InOut" Type="Int32" />
+            <Parameter Name="error" Mode="InOut" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="c_status" EntityType="FinflowModel.c_status" />
+          <EntitySet Name="Funds" EntityType="FinflowModel.Funds" />
+          <EntitySet Name="l_linkStatus" EntityType="FinflowModel.l_linkStatus" />
+          <EntitySet Name="person" EntityType="FinflowModel.person" />
+          <EntitySet Name="Remittance" EntityType="FinflowModel.Remittance" />
+          <AssociationSet Name="FK__l_linkSta__c_sta__6BE40491" Association="FinflowModel.FK__l_linkSta__c_sta__6BE40491">
+            <End Role="c_status" EntitySet="c_status" />
+            <End Role="l_linkStatus" EntitySet="l_linkStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__l_linkSta__c_sta__6CD828CA" Association="FinflowModel.FK__l_linkSta__c_sta__6CD828CA">
+            <End Role="c_status" EntitySet="c_status" />
+            <End Role="l_linkStatus" EntitySet="l_linkStatus" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Remittanc__c_sta__72910220" Association="FinflowModel.FK__Remittanc__c_sta__72910220">
+            <End Role="c_status" EntitySet="c_status" />
+            <End Role="Remittance" EntitySet="Remittance" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Funds__Remittanc__7755B73D" Association="FinflowModel.FK__Funds__Remittanc__7755B73D">
+            <End Role="Remittance" EntitySet="Remittance" />
+            <End Role="Funds" EntitySet="Funds" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Remittanc__Recei__74794A92" Association="FinflowModel.FK__Remittanc__Recei__74794A92">
+            <End Role="person" EntitySet="person" />
+            <End Role="Remittance" EntitySet="Remittance" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Remittanc__Sende__73852659" Association="FinflowModel.FK__Remittanc__Sende__73852659">
+            <End Role="person" EntitySet="person" />
+            <End Role="Remittance" EntitySet="Remittance" />
+          </AssociationSet>
+          <EntitySet Name="Remittance_state_log" EntityType="FinflowModel.Remittance_state_log" />
+          <AssociationSet Name="FK__Remittanc__c_sta__7EF6D905" Association="FinflowModel.FK__Remittanc__c_sta__7EF6D905">
+            <End Role="c_status" EntitySet="c_status" />
+            <End Role="Remittance_state_log" EntitySet="Remittance_state_log" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Remittanc__Remit__7E02B4CC" Association="FinflowModel.FK__Remittanc__Remit__7E02B4CC">
+            <End Role="Remittance" EntitySet="Remittance" />
+            <End Role="Remittance_state_log" EntitySet="Remittance_state_log" />
+          </AssociationSet>
+        </EntityContainer>
+        <ComplexType Name="get_person_Result">
+          <Property Type="Int32" Name="person_id" Nullable="false" />
+          <Property Type="String" Name="Name" Nullable="true" MaxLength="50" />
+          <Property Type="String" Name="Surname" Nullable="true" MaxLength="50" />
+          <Property Type="DateTime" Name="DateOfBirth" Nullable="true" />
+        </ComplexType>
+        <EntityType Name="c_status">
+          <Key>
+            <PropertyRef Name="c_status_id" />
+          </Key>
+          <Property Name="c_status_id" Type="Int32" Nullable="false" />
+          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="l_linkStatus" Relationship="FinflowModel.FK__l_linkSta__c_sta__6BE40491" FromRole="c_status" ToRole="l_linkStatus" />
+          <NavigationProperty Name="l_linkStatus1" Relationship="FinflowModel.FK__l_linkSta__c_sta__6CD828CA" FromRole="c_status" ToRole="l_linkStatus" />
+          <NavigationProperty Name="Remittance" Relationship="FinflowModel.FK__Remittanc__c_sta__72910220" FromRole="c_status" ToRole="Remittance" />
+          <NavigationProperty Name="Remittance_state_log" Relationship="FinflowModel.FK__Remittanc__c_sta__7EF6D905" FromRole="c_status" ToRole="Remittance_state_log" />
+        </EntityType>
+        <EntityType Name="Funds">
+          <Key>
+            <PropertyRef Name="Funds_id" />
+          </Key>
+          <Property Name="Funds_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="SendAmount" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="SendCurrency" Type="Int32" Nullable="false" />
+          <Property Name="ReceiveAmount" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <Property Name="ReceiveCurrency" Type="Int32" Nullable="false" />
+          <Property Name="Rate" Type="Decimal" Nullable="false" Precision="18" Scale="6" />
+          <Property Name="Remittance_Id" Type="Guid" Nullable="false" />
+          <NavigationProperty Name="Remittance" Relationship="FinflowModel.FK__Funds__Remittanc__7755B73D" FromRole="Funds" ToRole="Remittance" />
+        </EntityType>
+        <EntityType Name="l_linkStatus">
+          <Key>
+            <PropertyRef Name="l_linkStatus1" />
+          </Key>
+          <Property Name="l_linkStatus1" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="c_status_id_current" Type="Int32" Nullable="false" />
+          <Property Name="c_status_id_new" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="c_status" Relationship="FinflowModel.FK__l_linkSta__c_sta__6BE40491" FromRole="l_linkStatus" ToRole="c_status" />
+          <NavigationProperty Name="c_status1" Relationship="FinflowModel.FK__l_linkSta__c_sta__6CD828CA" FromRole="l_linkStatus" ToRole="c_status" />
+        </EntityType>
+        <EntityType Name="person">
+          <Key>
+            <PropertyRef Name="person_id" />
+          </Key>
+          <Property Name="person_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="Surname" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="DateOfBirth" Type="DateTime" Precision="0" />
+          <NavigationProperty Name="Remittance" Relationship="FinflowModel.FK__Remittanc__Recei__74794A92" FromRole="person" ToRole="Remittance" />
+          <NavigationProperty Name="Remittance1" Relationship="FinflowModel.FK__Remittanc__Sende__73852659" FromRole="person" ToRole="Remittance" />
+        </EntityType>
+        <EntityType Name="Remittance">
+          <Key>
+            <PropertyRef Name="Remittance_Id" />
+          </Key>
+          <Property Name="Remittance_Id" Type="Guid" Nullable="false" />
+          <Property Name="Code" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="c_status_id" Type="Int32" Nullable="false" />
+          <Property Name="Sender_id" Type="Int32" Nullable="false" />
+          <Property Name="Receiver_id" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="c_status" Relationship="FinflowModel.FK__Remittanc__c_sta__72910220" FromRole="Remittance" ToRole="c_status" />
+          <NavigationProperty Name="Funds" Relationship="FinflowModel.FK__Funds__Remittanc__7755B73D" FromRole="Remittance" ToRole="Funds" />
+          <NavigationProperty Name="person" Relationship="FinflowModel.FK__Remittanc__Recei__74794A92" FromRole="Remittance" ToRole="person" />
+          <NavigationProperty Name="person1" Relationship="FinflowModel.FK__Remittanc__Sende__73852659" FromRole="Remittance" ToRole="person" />
+          <NavigationProperty Name="Remittance_state_log" Relationship="FinflowModel.FK__Remittanc__Remit__7E02B4CC" FromRole="Remittance" ToRole="Remittance_state_log" />
+        </EntityType>
+        <Association Name="FK__l_linkSta__c_sta__6BE40491">
+          <End Type="FinflowModel.c_status" Role="c_status" Multiplicity="1" />
+          <End Type="FinflowModel.l_linkStatus" Role="l_linkStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="c_status">
+              <PropertyRef Name="c_status_id" />
+            </Principal>
+            <Dependent Role="l_linkStatus">
+              <PropertyRef Name="c_status_id_current" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__l_linkSta__c_sta__6CD828CA">
+          <End Type="FinflowModel.c_status" Role="c_status" Multiplicity="1" />
+          <End Type="FinflowModel.l_linkStatus" Role="l_linkStatus" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="c_status">
+              <PropertyRef Name="c_status_id" />
+            </Principal>
+            <Dependent Role="l_linkStatus">
+              <PropertyRef Name="c_status_id_new" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Remittanc__c_sta__72910220">
+          <End Type="FinflowModel.c_status" Role="c_status" Multiplicity="1" />
+          <End Type="FinflowModel.Remittance" Role="Remittance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="c_status">
+              <PropertyRef Name="c_status_id" />
+            </Principal>
+            <Dependent Role="Remittance">
+              <PropertyRef Name="c_status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Funds__Remittanc__7755B73D">
+          <End Type="FinflowModel.Remittance" Role="Remittance" Multiplicity="1" />
+          <End Type="FinflowModel.Funds" Role="Funds" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Remittance">
+              <PropertyRef Name="Remittance_Id" />
+            </Principal>
+            <Dependent Role="Funds">
+              <PropertyRef Name="Remittance_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Remittanc__Recei__74794A92">
+          <End Type="FinflowModel.person" Role="person" Multiplicity="1" />
+          <End Type="FinflowModel.Remittance" Role="Remittance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="person">
+              <PropertyRef Name="person_id" />
+            </Principal>
+            <Dependent Role="Remittance">
+              <PropertyRef Name="Receiver_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Remittanc__Sende__73852659">
+          <End Type="FinflowModel.person" Role="person" Multiplicity="1" />
+          <End Type="FinflowModel.Remittance" Role="Remittance" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="person">
+              <PropertyRef Name="person_id" />
+            </Principal>
+            <Dependent Role="Remittance">
+              <PropertyRef Name="Sender_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Remittance_state_log">
+          <Key>
+            <PropertyRef Name="Remittance_state_log1" />
+          </Key>
+          <Property Name="Remittance_state_log1" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Remittance_Id" Type="Guid" Nullable="false" />
+          <Property Name="c_status_id" Type="Int32" Nullable="false" />
+          <Property Name="datetime_modify" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="c_status" Relationship="FinflowModel.FK__Remittanc__c_sta__7EF6D905" FromRole="Remittance_state_log" ToRole="c_status" />
+          <NavigationProperty Name="Remittance" Relationship="FinflowModel.FK__Remittanc__Remit__7E02B4CC" FromRole="Remittance_state_log" ToRole="Remittance" />
+        </EntityType>
+        <Association Name="FK__Remittanc__c_sta__7EF6D905">
+          <End Type="FinflowModel.c_status" Role="c_status" Multiplicity="1" />
+          <End Type="FinflowModel.Remittance_state_log" Role="Remittance_state_log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="c_status">
+              <PropertyRef Name="c_status_id" />
+            </Principal>
+            <Dependent Role="Remittance_state_log">
+              <PropertyRef Name="c_status_id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Remittanc__Remit__7E02B4CC">
+          <End Type="FinflowModel.Remittance" Role="Remittance" Multiplicity="1" />
+          <End Type="FinflowModel.Remittance_state_log" Role="Remittance_state_log" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Remittance">
+              <PropertyRef Name="Remittance_Id" />
+            </Principal>
+            <Dependent Role="Remittance_state_log">
+              <PropertyRef Name="Remittance_Id" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="Хранилище FinflowModelContainer" CdmEntityContainer="FinflowEntities">
+          <FunctionImportMapping FunctionImportName="get_person" FunctionName="Хранилище FinflowModel.get_person">
+            <ResultMapping>
+              <ComplexTypeMapping TypeName="FinflowModel.get_person_Result">
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+              </ComplexTypeMapping>
+            </ResultMapping>
+          </FunctionImportMapping>
+          <FunctionImportMapping FunctionImportName="iud_person" FunctionName="Хранилище FinflowModel.iud_person" />
+          <FunctionImportMapping FunctionImportName="iud_funds" FunctionName="Хранилище FinflowModel.iud_funds" />
+          <FunctionImportMapping FunctionImportName="remittance_change_status" FunctionName="Хранилище FinflowModel.remittance_change_status" />
+          <FunctionImportMapping FunctionImportName="iud_remittance" FunctionName="Хранилище FinflowModel.iud_remittance" />
+          <EntitySetMapping Name="c_status">
+            <EntityTypeMapping TypeName="FinflowModel.c_status">
+              <MappingFragment StoreEntitySet="c_status">
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="c_status_id" ColumnName="c_status_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Funds">
+            <EntityTypeMapping TypeName="FinflowModel.Funds">
+              <MappingFragment StoreEntitySet="Funds">
+                <ScalarProperty Name="Remittance_Id" ColumnName="Remittance_Id" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+                <ScalarProperty Name="ReceiveCurrency" ColumnName="ReceiveCurrency" />
+                <ScalarProperty Name="ReceiveAmount" ColumnName="ReceiveAmount" />
+                <ScalarProperty Name="SendCurrency" ColumnName="SendCurrency" />
+                <ScalarProperty Name="SendAmount" ColumnName="SendAmount" />
+                <ScalarProperty Name="Funds_id" ColumnName="Funds_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="l_linkStatus">
+            <EntityTypeMapping TypeName="FinflowModel.l_linkStatus">
+              <MappingFragment StoreEntitySet="l_linkStatus">
+                <ScalarProperty Name="c_status_id_new" ColumnName="c_status_id_new" />
+                <ScalarProperty Name="c_status_id_current" ColumnName="c_status_id_current" />
+                <ScalarProperty Name="l_linkStatus1" ColumnName="l_linkStatus" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="person">
+            <EntityTypeMapping TypeName="FinflowModel.person">
+              <MappingFragment StoreEntitySet="person">
+                <ScalarProperty Name="DateOfBirth" ColumnName="DateOfBirth" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="person_id" ColumnName="person_id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Remittance">
+            <EntityTypeMapping TypeName="FinflowModel.Remittance">
+              <MappingFragment StoreEntitySet="Remittance">
+                <ScalarProperty Name="Receiver_id" ColumnName="Receiver_id" />
+                <ScalarProperty Name="Sender_id" ColumnName="Sender_id" />
+                <ScalarProperty Name="c_status_id" ColumnName="c_status_id" />
+                <ScalarProperty Name="Code" ColumnName="Code" />
+                <ScalarProperty Name="Remittance_Id" ColumnName="Remittance_Id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Remittance_state_log">
+            <EntityTypeMapping TypeName="FinflowModel.Remittance_state_log">
+              <MappingFragment StoreEntitySet="Remittance_state_log">
+                <ScalarProperty Name="datetime_modify" ColumnName="datetime_modify" />
+                <ScalarProperty Name="c_status_id" ColumnName="c_status_id" />
+                <ScalarProperty Name="Remittance_Id" ColumnName="Remittance_Id" />
+                <ScalarProperty Name="Remittance_state_log1" ColumnName="Remittance_state_log" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="false" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="Нет" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

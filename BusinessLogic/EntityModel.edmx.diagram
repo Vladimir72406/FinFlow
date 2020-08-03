@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="8b0602a310634f2daf36394b87c67164" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="FinflowModel.c_status" Width="1.5" PointX="3.25" PointY="3.875" />
+        <EntityTypeShape EntityType="FinflowModel.Funds" Width="1.5" PointX="9.375" PointY="1.375" />
+        <EntityTypeShape EntityType="FinflowModel.l_linkStatus" Width="1.5" PointX="5.5" PointY="6.5" />
+        <EntityTypeShape EntityType="FinflowModel.person" Width="1.5" PointX="3.25" PointY="0.875" />
+        <EntityTypeShape EntityType="FinflowModel.Remittance" Width="1.5" PointX="6.125" PointY="1.5" />
+        <AssociationConnector Association="FinflowModel.FK__l_linkSta__c_sta__6BE40491" />
+        <AssociationConnector Association="FinflowModel.FK__l_linkSta__c_sta__6CD828CA" />
+        <AssociationConnector Association="FinflowModel.FK__Remittanc__c_sta__72910220" />
+        <AssociationConnector Association="FinflowModel.FK__Funds__Remittanc__7755B73D" />
+        <AssociationConnector Association="FinflowModel.FK__Remittanc__Recei__74794A92" />
+        <AssociationConnector Association="FinflowModel.FK__Remittanc__Sende__73852659" />
+        <EntityTypeShape EntityType="FinflowModel.Remittance_state_log" Width="1.5" PointX="1" PointY="3.5" />
+        <AssociationConnector Association="FinflowModel.FK__Remittanc__c_sta__7EF6D905" />
+        <AssociationConnector Association="FinflowModel.FK__Remittanc__Remit__7E02B4CC" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
